@@ -1,8 +1,6 @@
-package com.example.kotlincoroutineex
+package com.example.kotlincoroutineex.chapter1
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.widget.TextView
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.lifecycleScope
@@ -10,36 +8,38 @@ import com.example.kotlincoroutineex.common.Contributor
 import com.example.kotlincoroutineex.common.gitHub
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kotlin.concurrent.thread
 
 /**
  * author: liumingsong
  * created on: 2025/7/2 16:45
  * description:
  */
-class StructuredConcurrencyActivity : ComponentActivity() {
+class WithContext2Activity : ComponentActivity() {
     private lateinit var infoTextView: TextView
-
-    private var job: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.layout_1)
         infoTextView = findViewById(R.id.infoTextView)
 
-        val job = coroutinesStyle()
+        CoroutineScope(Dispatchers.Default).launch {
+            val data = getData()
+            val processedData = processData(data)
+
+            println("Processed data: $processedData")
+        }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    private suspend fun getData() = withContext(Dispatchers.IO) {
+        // 网络代码
+        "data"
+    }
 
-        job?.cancel()
-        lifecycleScope.cancel()
+    private suspend fun processData(data: String) = withContext(Dispatchers.Default) {
+        // 处理数据
+        "processed $data"
     }
 
     private fun coroutinesStyle() = lifecycleScope.launch {

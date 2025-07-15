@@ -1,6 +1,8 @@
-package com.example.kotlincoroutineex
+package com.example.kotlincoroutineex.chapter1
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.widget.TextView
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.lifecycleScope
@@ -10,13 +12,14 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlin.concurrent.thread
 
 /**
  * author: liumingsong
  * created on: 2025/7/2 16:45
  * description:
  */
-class WithContext2Activity : ComponentActivity() {
+class WithContext3Activity : ComponentActivity() {
     private lateinit var infoTextView: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,6 +32,13 @@ class WithContext2Activity : ComponentActivity() {
             val processedData = processData(data)
 
             println("Processed data: $processedData")
+        }
+
+        val handler = Handler(Looper.getMainLooper())
+        thread {
+            handler.post {
+
+            }
         }
     }
 

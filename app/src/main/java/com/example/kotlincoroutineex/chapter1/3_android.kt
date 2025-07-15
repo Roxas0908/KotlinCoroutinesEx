@@ -1,4 +1,4 @@
-package com.example.kotlincoroutineex
+package com.example.kotlincoroutineex.chapter1
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

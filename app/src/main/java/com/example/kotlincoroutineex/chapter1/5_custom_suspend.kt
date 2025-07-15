@@ -1,4 +1,4 @@
-package com.example.kotlincoroutineex
+package com.example.kotlincoroutineex.chapter1
 
 import com.example.kotlincoroutineex.common.Contributor
 import com.example.kotlincoroutineex.common.gitHub
