@@ -3,6 +3,7 @@ package com.example.kotlincoroutineex.chapter1
 import android.os.Bundle
 import android.widget.TextView
 import androidx.activity.ComponentActivity
+import com.example.kotlincoroutineex.R
 import com.example.kotlincoroutineex.common.gitHub
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

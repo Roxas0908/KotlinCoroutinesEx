@@ -6,6 +6,7 @@ import android.os.Looper
 import android.widget.TextView
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.lifecycleScope
+import com.example.kotlincoroutineex.R
 import com.example.kotlincoroutineex.common.Contributor
 import com.example.kotlincoroutineex.common.gitHub
 import kotlinx.coroutines.CoroutineScope
