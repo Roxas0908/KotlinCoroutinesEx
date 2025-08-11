@@ -1,7 +1,5 @@
-package com.example.kotlincoroutineex
+package com.example.kotlincoroutineex.chapter2
 
-import androidx.compose.animation.scaleIn
-import com.example.kotlincoroutineex.common.gitHub
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

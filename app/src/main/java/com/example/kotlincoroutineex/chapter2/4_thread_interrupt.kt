@@ -1,4 +1,4 @@
-package com.example.kotlincoroutineex
+package com.example.kotlincoroutineex.chapter2
 
 import kotlinx.coroutines.runBlocking
 import kotlin.concurrent.thread

@@ -1,4 +1,4 @@
-package com.example.kotlincoroutineex
+package com.example.kotlincoroutineex.chapter2
 
 import com.example.kotlincoroutineex.common.gitHub
 import kotlinx.coroutines.CoroutineScope
@@ -6,8 +6,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import kotlin.concurrent.thread
-import kotlin.coroutines.ContinuationInterceptor
 
 
 /**
