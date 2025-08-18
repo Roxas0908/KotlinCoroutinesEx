@@ -1,17 +1,14 @@
-package com.example.kotlincoroutineex
+package com.example.kotlincoroutineex.chapter2
 
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.async
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
-import kotlin.concurrent.thread
 import kotlin.coroutines.EmptyCoroutineContext
 
 
@@ -21,31 +18,33 @@ import kotlin.coroutines.EmptyCoroutineContext
  * description:
  */
 fun main() = runBlocking {
-    Thread.setDefaultUncaughtExceptionHandler { t, e ->
-        println("Caught default: $e")
-    }
-//
-//    val thread = Thread() {
-//        throw RuntimeException()
-//    }
-//
-//    thread.setUncaughtExceptionHandler { t, e ->
-//        println(e)
-//    }
-//    thread.start()
-
     val scope = CoroutineScope(EmptyCoroutineContext)
     val handler = CoroutineExceptionHandler { coroutineContext, e ->
         println("Caught in Coroutine: $e")
     }
 
-    scope.launch(handler) {
-        launch {
+    scope.async {
+        val deferred = async {
+            delay(1000)
             throw RuntimeException("Error!")
         }
-        launch {
+        launch(Job()) {
+            try {
+//                delay(2000)
+//                deferred.await()
+            } catch (e: Exception) {
+                println("Caught in await: $e")
+            }
+            deferred.await()
+//            try {
+//                delay(1000)
+//            } catch (e: Exception) {
+//                println("Caught in delay: $e")
+//            }
 
         }
+//        delay(100)
+//        cancel()
     }
 
     delay(10000)
