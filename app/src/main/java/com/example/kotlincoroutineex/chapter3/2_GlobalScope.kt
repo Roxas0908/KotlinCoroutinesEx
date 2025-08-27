@@ -16,7 +16,7 @@ import kotlin.coroutines.EmptyCoroutineContext
  */
 fun main() = runBlocking {
     CoroutineScope(EmptyCoroutineContext).launch {
-        
+
     }
 
     val job = GlobalScope.launch {
