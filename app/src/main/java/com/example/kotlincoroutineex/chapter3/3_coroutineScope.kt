@@ -20,7 +20,7 @@ import kotlin.coroutines.coroutineContext
  * created on: 2025/7/2 16:45
  * description:
  */
-fun main() = runBlocking {
+fun main3() = runBlocking {
     val scope = CoroutineScope(EmptyCoroutineContext)
 
     scope.launch {

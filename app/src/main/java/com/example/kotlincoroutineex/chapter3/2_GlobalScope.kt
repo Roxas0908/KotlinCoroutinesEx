@@ -14,7 +14,7 @@ import kotlin.coroutines.EmptyCoroutineContext
  * created on: 2025/7/2 16:45
  * description:
  */
-fun main() = runBlocking {
+fun main2() = runBlocking {
     CoroutineScope(EmptyCoroutineContext).launch {
 
     }
