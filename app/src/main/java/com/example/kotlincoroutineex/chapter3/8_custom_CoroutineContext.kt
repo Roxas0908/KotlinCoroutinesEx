@@ -28,23 +28,24 @@ import kotlin.coroutines.coroutineContext
  * created on: 2025/7/2 16:45
  * description:
  */
-@OptIn(ExperimentalStdlibApi::class)
 fun main(): Unit = runBlocking {
     val scope = CoroutineScope(EmptyCoroutineContext)
+    val customContext = Logger()
 
-    scope.launch {
-
+    scope.launch(customContext) {
+        coroutineContext[Logger]?.log()
     }
-
 
     delay(10000)
 }
 
 
-class MyContext: AbstractCoroutineContextElement(MyContext) {
-    companion object Key: CoroutineContext.Key<MyContext>
+class Logger: AbstractCoroutineContextElement(Logger) {
+    companion object Key: CoroutineContext.Key<Logger>
 
-
+    suspend fun log() {
+        println("Current coroutine: $coroutineContext")
+    }
 }
 
 
