@@ -38,30 +38,21 @@ import kotlin.coroutines.coroutineContext
 fun main(): Unit = runBlocking {
     val scope = CoroutineScope(EmptyCoroutineContext)
 
-//    val deferred1 = scope.async {
-//        gitHub.contributors("square", "retrofit")
-//    }
-//    val deferred2 = scope.async {
-//        gitHub.contributors("square", "okhttp")
-//    }
-//
-//    println("Contributors: 1. ${deferred1.await()}, 2. ${deferred2.await()}")
-//
-//    val deferred = scope.async {
-//        gitHub.contributors("square", "retrofit")
-//    }
-//
-//    scope.launch {
-//        delay(5000)
-//        println("Contributors: ${deferred.await()}")
-//    }
+    val channel = Channel<List<Contributor>>()
 
-//    delay(1000)
+    while (isActive) {
+        val data = gitHub.contributors("square", "retrofit")
+        channel.send(data)
+    }
 
-    val receiver = scope.produce {
+    scope.launch {
         while (isActive) {
-            val data = gitHub.contributors("square", "retrofit")
-            send(data)
+            channel.receive()
+        }
+    }
+    scope.launch {
+        while (isActive) {
+            channel.receive()
         }
     }
 
@@ -69,7 +60,7 @@ fun main(): Unit = runBlocking {
         delay(5000)
 
         while (isActive) {
-            println("Contributors: ${receiver.receive()}")
+            println("Contributors: ${channel.receive()}")
         }
     }
 
