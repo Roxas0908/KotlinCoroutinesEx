@@ -2,6 +2,7 @@ package com.example.kotlincoroutineex.chapter4
 
 
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
@@ -9,9 +10,13 @@ import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.sample
+import kotlinx.coroutines.flow.timeout
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlin.coroutines.EmptyCoroutineContext
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 
 
 /**
@@ -22,41 +27,47 @@ import kotlin.coroutines.EmptyCoroutineContext
 fun main(): Unit = runBlocking {
     val scope = CoroutineScope(EmptyCoroutineContext)
     val flow1 = flowOf(1, 2, 3)
-    val flow2 = flowOf("roxas", "Roxas", "ROXAS")
+    val flow2 = flow {
+        delay(500)
+        emit(0)
+        emit(1)
+        delay(900)
+        emit(1.5)
+        emit(2)
+        delay(2000)
+        emit(3)
+    }
 
     scope.launch {
-        flow1.customOperator().collect {
-
+        flow2.sample(1.seconds).collect {
+            println("flow2: $it")
         }
 
-//        flow1.customOperator().collect(object : FlowCollector<Int> {
-//            override suspend fun emit(value: Int) {
-//                println(value)
-//            }
-//        })
+//        flow2.timeout(1.seconds).collect {
+//            println("flow2: $it")
+//        }
 
-        flow1.multiply2().collect(object : FlowCollector<Int> {
-            override suspend fun emit(value: Int) {
-                println(value)
+        try {
+            flow1.timeout(5.seconds).collect {
+                // 显示正在输入
             }
-        })
+        } catch (e: TimeoutCancellationException) {
+            // 关闭提示
+        }
+
     }
 
     delay(8000)
 }
 
-fun <T> Flow<T>.customOperator(): Flow<T> = flow {
-    this@customOperator.collect {
-        emit(it)
-        emit(it)
+fun <T> Flow<T>.throttle(duration: Duration): Flow<T> = flow {
+    var lastTime = 0L
+
+    this@throttle.collect {
+        if (System.currentTimeMillis() - lastTime >= duration.inWholeMilliseconds) {
+            emit(it)
+            lastTime = System.currentTimeMillis()
+        }
     }
 }
-
-fun Flow<Int>.multiply2(): Flow<Int> = channelFlow {
-    this@multiply2.collect {
-        send(it * 2)
-    }
-}
-
-
 
