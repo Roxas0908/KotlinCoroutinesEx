@@ -26,14 +26,23 @@ class WithContextActivity: ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         CoroutineScope(Dispatchers.Main).launch {
+            println("CoroutineScope(Dispatchers.Main).launch(): ${Thread.currentThread()}")
+
+            /**
+             * 两个 withContext() 的线程名有时候是不一样的, 有时候是一样的
+             */
             val data = withContext(Dispatchers.IO) {
+                println("withContext(Dispatchers.IO): ${Thread.currentThread()}")
                 // 网络代码
                 "data"
             }
+
             val processData = withContext(Dispatchers.Default) {
+                println("withContext(Dispatchers.Default): ${Thread.currentThread()}")
                 // 处理数据
                 "process $data"
             }
+
             println("Processed data: $processData")
         }
     }

@@ -13,7 +13,7 @@
         android:theme="@style/Theme.KotlinCoroutineEx"
         tools:targetApi="31">
         <activity
-            android:name=".CoroutineActivity"
+            android:name=".chapter1.WithContextActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.KotlinCoroutineEx">
