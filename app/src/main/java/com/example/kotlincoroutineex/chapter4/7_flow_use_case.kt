@@ -65,6 +65,7 @@ fun main(): Unit = runBlocking {
 val weatherFlow = flow {
     while (true) {
         emit(getWeather())
+        delay(600)
     }
 }
 
