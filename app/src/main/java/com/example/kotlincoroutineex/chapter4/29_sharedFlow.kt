@@ -4,6 +4,7 @@ package com.example.kotlincoroutineex.chapter4
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asFlow
@@ -40,7 +41,6 @@ import kotlin.coroutines.EmptyCoroutineContext
 fun main(): Unit = runBlocking {
     val scope = CoroutineScope(EmptyCoroutineContext)
     val flow1 = flow {
-        delay(500)
         emit(1)
         delay(500)
         emit(2)
@@ -48,19 +48,23 @@ fun main(): Unit = runBlocking {
         emit(3)
     }
 
-    flow1.launchIn(scope)
-
-    val sharedFlow = flow1.shareIn(scope, SharingStarted.Eagerly)
+    val sharedFlow = flow1.shareIn(scope, SharingStarted.WhileSubscribed(), 2)
 
     scope.launch {
-        delay(1400)
+        val parent = this
+
+        launch {
+            delay(4000)
+            parent.cancel()
+        }
+
+        delay(1500)
         sharedFlow.collect {
             println("collect()-1: $it")
         }
     }
-
     scope.launch {
-        delay(1400)
+        delay(5000)
         sharedFlow.collect {
             println("collect()-2: $it")
         }
